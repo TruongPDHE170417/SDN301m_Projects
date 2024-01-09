@@ -6,7 +6,7 @@ import express from 'express';
 import * as dotenv from 'dotenv'
 
 //import the router
-import productRouter from './route/product.js';
+import productRouter from './routes/product.js';
 dotenv.config();
 
 //định nghĩa một web server
