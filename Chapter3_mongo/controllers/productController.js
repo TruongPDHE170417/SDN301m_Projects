@@ -12,16 +12,29 @@ const getAllProducts = async (req, res) => {
     }
 }
 
-const getProductByObjectId = async (req, res) => {
+const deleteProductByObjectId = async (req, res) => {
     try {
         const targetId = req.params.id;
-        const target = await productDAO.getProductByObjectId(targetId);
-        if(target == undefined){
+        const target = await productDAO.deleteProductByObjectId(targetId);
+        if (target == undefined) {
             res.status(204).json({ message: "No content" });
         }
         res.status(200).json(target);
     } catch (error) {
-        res.status(500).json({message:`error found: ${error}`})
+        res.status(500).json({ message: `error found: ${error}` })
+    }
+}
+
+const getProductByObjectId = async (req, res) => {
+    try {
+        const targetId = req.params.id;
+        const target = await productDAO.getProductByObjectId(targetId);
+        if (target == undefined) {
+            res.status(204).json({ message: "No content" });
+        }
+        res.status(200).json(target);
+    } catch (error) {
+        res.status(500).json({ message: `error found: ${error}` })
     }
 }
 
@@ -34,4 +47,15 @@ const createProduct = async (req, res) => {
         res.status(500).json({ message: `Can not create a new Product. ${error}` });
     }
 }
-export default { getAllProducts, createProduct, getProductByObjectId };
+
+const updateProductByObjectId = async (req, res) => {
+    try {
+        const { name, price, description, category } = req.body;
+        const target = req.params.id;
+        const result = await productDAO.updateProductByObjectId(target, { name, price, description, category });
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ message: `Can not create a new Product. ${error}` });
+    }
+}
+export default { getAllProducts, createProduct, getProductByObjectId, deleteProductByObjectId, updateProductByObjectId };
