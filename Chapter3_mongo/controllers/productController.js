@@ -29,7 +29,7 @@ const getProductByObjectId = async (req, res) => {
     try {
         const targetId = req.params.id;
         const target = await productDAO.getProductByObjectId(targetId);
-        if (target == undefined) {
+        if (target == null) {
             res.status(204).json({ message: "No content" });
         }
         res.status(200).json(target);
@@ -44,7 +44,7 @@ const createProduct = async (req, res) => {
         const result = await productDAO.createProduct({ name, price, description, category });
         res.status(201).json(result);
     } catch (error) {
-        res.status(500).json({ message: `Can not create a new Product. ${error}` });
+        res.status(400).json({ message: `Can not create a new Product. ${error.toString()}` });
     }
 }
 

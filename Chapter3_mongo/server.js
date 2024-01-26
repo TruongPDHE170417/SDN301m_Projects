@@ -13,7 +13,6 @@ import connectDB from './database.js'
 
 dotenv.config();
 
-
 //định nghĩa một web server
 const app = express();
 const port = process.env.PORT || 8080;
@@ -21,10 +20,22 @@ const port = process.env.PORT || 8080;
 //active middleware to read the json from body
 app.use(json());
 
+//cors
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
+
 //note: nếu mà define path trùng với ở file server. theo flow của code sẽ nhận cái đầu tiên.
 //using productRouter
 //define the URI of this route
 app.use('/products', productRouter);
+app.use('*', (req, res) => {
+    res.status(404);
+    res.json({ message: "path invalid" });
+})
 
 
 

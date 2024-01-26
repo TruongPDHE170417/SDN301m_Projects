@@ -66,7 +66,7 @@ const createProduct = async ({
         //return
         return newProduct._doc; //* Lấy return về dưới dạng client
     } catch (err) {
-        throw new Error(err.toString());
+        throw err;
     }
 }
 

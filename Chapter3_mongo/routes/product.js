@@ -1,6 +1,5 @@
 import express from 'express';
 import { productController } from '../controllers/index.js';
-
 //khai bao doi tuong router
 const productRouter = express.Router();
 
@@ -17,9 +16,11 @@ productRouter
         return productController.getAllProducts(req, res);
     })
     .post('/', (req, res) => {
+        res.set('Content-Type', 'application/json; charset=utf-8')
         return productController.createProduct(req, res);
     })
     .put('/:id', (req, res) => {
+        res.set('Content-Type', 'application/json; charset=utf-8')
         return productController.updateProductByObjectId(req, res);
     })
 export default productRouter;
