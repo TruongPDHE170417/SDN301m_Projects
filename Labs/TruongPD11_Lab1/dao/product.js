@@ -71,6 +71,25 @@ const createProduct = async ({
     }
 }
 
+// Express 4.x
+
+// To get a URL parameter's value, use req.params
+
+// app.get('/p/:tagId', function(req, res) {
+//   res.send("tagId is set to " + req.params.tagId);
+// });
+
+// // GET /p/5
+// // tagId is set to 5
+// If you want to get a query parameter ?tagId=5, then use req.query
+
+// app.get('/p', function(req, res) {
+//   res.send("tagId is set to " + req.query.tagId);
+// });
+
+// // GET /p?tagId=5
+// // tagId is set to 5
+
 export default {
     createProduct,
     getAllProducts,
@@ -79,4 +98,12 @@ export default {
     updateProductByObjectId
 }
 
-//
+// Dear programmer
+// When I wrote this code, only god and I knew how it worked
+// Now, only god knows it
+
+// Therefore, If you are trying to optimize or fix my code
+// and fail (most surely). 
+// Please don't ask me for help, I have no idea what I wrote either.
+// feel free to add your searched solution link under this section.
+// https://youtu.be/QwLvrnlfdNo?si=GTC-qTI53EKJCrlhD
