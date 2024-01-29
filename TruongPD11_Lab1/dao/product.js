@@ -15,8 +15,8 @@ const getAllProducts = async () => {
 //* Get by Id
 const getProductByObjectId = async (target) => {
     try {
-        const result = await Product.findById(target);
-        return result
+        const result = await Product.findById(target).populate('category');
+        return result;
     } catch (error) {
         return undefined
     }
@@ -78,3 +78,5 @@ export default {
     deleteProductByObjectId,
     updateProductByObjectId
 }
+
+//
