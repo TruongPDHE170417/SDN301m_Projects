@@ -47,7 +47,7 @@ const productSchema = new Schema({
     },
     category: {
         type: Schema.Types.ObjectId,
-        ref: Category,
+        ref: Category, //hoặc là tên của collection đã có rồi thì chỉ cần dùng "category"
         required: [true, "this field is required"],
     },
     images: [imageSchema],
