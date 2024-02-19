@@ -51,11 +51,13 @@ const productSchema = new Schema({
         required: [true, "this field is required"],
     },
     images: [imageSchema],
-    comments: [commentSchema]
+    comments: [commentSchema]   
 }, {
     timestamps: true,
 });
 
 //* Na ná entity class
+//mapping to collection Products
 const Product = mongoose.model("products", productSchema);
 export default Product;
+
