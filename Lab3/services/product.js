@@ -1,16 +1,4 @@
-import { Types } from 'mongoose';
 import { ProductRepo, CommentRepo, ImageRepo } from '../repositories/index.js';
-
-// // GET: /products
-// const getProducts = async (req, res) => {
-//     try {
-//         res.status(200).json(await ProductRepo.list())
-//     } catch (error) {
-//         res.status(500).json({
-//             message: error.toString()
-//         })
-//     }
-// }
 
 // GET: /products/comments/:id
 const getComments = async (productId) => {
@@ -52,37 +40,24 @@ const getImages = async (productId) => {
 }
 
 // POST: /products
-const create = async ({ name, price, description, images, comments, category }) => {
+const create = async (name, price, description, images, comments, category) => {
     try {
-        const newUser = await ProductRepo.create({ name, price, description, images, comments, category });
-        if (newUser.comments.length > 0) {
-            newUser.comments.forEach(comment => {
-                const id = new Types.ObjectId(comment._id);
-                CommentRepo.create(id, comment.text, comment.author);
-            });
-        }
-        if (newUser.images.length > 0) {
-            newUser.images.forEach(image => {
-                const id = new Types.ObjectId(image._id);
-                ImageRepo.create(id, image.url, image.caption);
-            });
-        }
+        const newUser = await ProductRepo.create(name, price, description, images, comments, category);
         return newUser;
     } catch (e) {
         throw new Error(e.toString());
     }
 }
 
-// // PUT: /products/1
-// const editProduct = async (req, res) => {
-//     try {
-//         res.status(200).json(await ProductRepo.edit(req.params.id, req.body));
-//     } catch (error) {
-//         res.status(500).json({
-//             error: error.toString()
-//         });
-//     }
-// }
+// PUT: /products/1
+const edit = async (productId, body) => {
+    try {
+        const updatedProduct = await ProductRepo.edit(productId, body);
+        return updatedProduct;
+    } catch (error) {
+        throw new Error(error.toString());
+    }
+}
 
 // DELETE: /products/:id
 const deleteProduct = async (id) => {
@@ -96,17 +71,16 @@ const deleteProduct = async (id) => {
         deleteImage?.forEach(image => {
             ImageRepo.drop(image._id);
         })
+        return deleteProduct;
     } catch (error) {
         throw new Error(error.toString());
     }
 }
 
 export default {
-    // getProducts,
-    // getProductById,
     getImages,
     getComments,
     create,
-    // editProduct,
+    edit,
     deleteProduct
 }

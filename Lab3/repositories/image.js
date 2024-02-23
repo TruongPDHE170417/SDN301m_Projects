@@ -1,14 +1,21 @@
-import { Types } from "mongoose";
+import { Schema, Types } from "mongoose";
 import Images from "../models/image.js";
 
-const create = async (_id, url, caption, name) => {
+const create = async (url, caption, name) => {
     try {
-        const temp = new Types.ObjectId(_id);
-        _id = temp;
-        const newComment = await Images.create({ _id, url, caption, name });
+        const newComment = await Images.create({ url, caption, name });
         return newComment._doc;
     } catch (e) {
         throw new Error(e.toString());
+    }
+}
+
+const createMany = async (images) => {
+    try {
+        const result = await Images.insertMany(images);
+        return result;
+    } catch (error) {
+
     }
 }
 const drop = async (id) => {
@@ -32,9 +39,19 @@ const getById = async (id) => {
         throw new Error(error.toString());
     }
 }
+
+const edit = async (image) => {
+    try {
+        return await Images.findByIdAndUpdate({ _id: new Types.ObjectId(image._id) }, image, { new: true });
+    } catch (error) {
+        throw new Error(error.toString());
+    }
+}
 export default {
     getById,
     create,
+    createMany,
     drop,
-    dropMany
+    dropMany,
+    edit
 }

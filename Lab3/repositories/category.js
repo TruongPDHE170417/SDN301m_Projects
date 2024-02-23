@@ -1,6 +1,6 @@
 import Categories from "../models/category.js";
 
-const create = async ({name, description,}) =>{
+const create = async ({name, description}) =>{
     try {
         const newCategory = await Categories.create({name, description});
         return newCategory._doc;

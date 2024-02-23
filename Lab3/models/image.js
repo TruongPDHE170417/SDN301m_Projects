@@ -1,11 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
-import Products from './product.js';
 
 const imageSchema = new Schema({
-    _id:{
-        type:Schema.Types.ObjectId, 
-        ref: "products.images"
-    },
     "url": {
         type: String
     },

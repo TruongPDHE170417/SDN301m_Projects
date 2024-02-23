@@ -1,28 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-// Product object schema
-const childImageSchema = new Schema({
-    "url": {
-        type: String,
-        trim: true
-    },
-    "caption": {
-        type: String,
-        trim: true
-    }
-}, {
-    timestamps: false
-})
-
-const childCommentSchema = new Schema({
-    "text": {
-        type: String,
-    },
-    "author": {
-        type: String
-    }
-}, {
-    timestamps: false
-})
 
 const productSchema = new Schema({
     "name": {
@@ -42,8 +18,28 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-    "images": [childImageSchema],
-    "comments": [childCommentSchema],
+    "images": [{
+        _id: {
+            type: String
+        },
+        url: {
+            type: String
+        },
+        caption: {
+            type: String
+        }
+    }],
+    "comments": [{
+        _id: {
+            type: String
+        },
+        text: {
+            type: String
+        },
+        author: {
+            type: String
+        }
+    }],
     "category": {
         type: Schema.Types.ObjectId,
         ref: "categories"

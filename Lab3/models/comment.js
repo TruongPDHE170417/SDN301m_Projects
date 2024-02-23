@@ -1,10 +1,5 @@
 import mongoose, { Schema } from "mongoose"
-import Products from './product.js';
 const commentSchema = new Schema({
-    _id: {
-        type: Schema.Types.ObjectId,
-        ref: "products.comments"
-    },
     "text": {
         type: String
     },
