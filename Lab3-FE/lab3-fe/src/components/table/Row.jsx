@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Row = ({ id, name, price }) => {
+const Row = ({ id, name, price, binding }) => {
     const [isDelete, setIsDelete] = useState(false);
     const handleDelete = async () => {
         let confirmOption = window.confirm("Are you sure want to delete this product");
@@ -22,6 +22,12 @@ const Row = ({ id, name, price }) => {
 
     }
     if (isDelete) {
+        const targetWithIndex = binding.findIndex((target) => {
+            return target.id === id;
+        })
+        if (targetWithIndex > -1) {
+            binding.splice(targetWithIndex, 1);
+        }
         return null
     }
     return (

@@ -1,17 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import CategorySelect from "./CategorySelect";
 
 const ProductForm = ({ mode, id }) => {
-    const [message, setMessage] = useState();
-    const [action, setAction] = useState();
+    //object
     const productInfoInit = {
         name: "",
         price: "",
         description: "",
-        category: "",
+        comments: [],
+        images: [],
+        category: ""
+
     }
+
+    //state
+    const [message, setMessage] = useState();
+    const [action, setAction] = useState();
+    const [imageList, setImageList] = useState([]);
     const [productInfo, setProductInfo] = useState(productInfoInit);
 
+    //function
+    const getCategory = () => {
+        const element = document.getElementById('category');
+        const option = element.options[element.selectedIndex];
+        const id = option.getAttribute('id');
+        return id;
+    }
+
+    const deleteImage = (index) => {
+        const target = imageList[index];
+        console.log(index)
+        console.log(target);
+        setImageList(l => l.filter(img => { return img.name !== target.name }));
+    }
+
+    //handler
     const handleCreate = async () => {
         try {
             const response = await fetch('http://127.0.0.1:9999/products/', {
@@ -54,18 +78,36 @@ const ProductForm = ({ mode, id }) => {
     }
 
     const handleProcess = async (event) => {
+        const category = getCategory();
         const formData = new FormData(event.target);
         event.preventDefault();
         const dataInput = {
             name: await formData.get("name"),
             price: await formData.get("price"),
             description: await formData.get("description"),
-            category: await formData.get("category"),
+            comments: [],
+            images: imageList,
+            category: category
         };
         setProductInfo(dataInput);
+        console.log(dataInput);
         setAction(true);
     }
 
+    const handleImage = async (event) => {
+        const formData = new FormData(event.target);
+        document.getElementById("imageForm").reset();
+        event.preventDefault();
+        const newImg = {
+            url: await formData.get("Iurl"),
+            caption: await formData.get("Icaption"),
+            name: await formData.get("Iname")
+        };
+        setImageList(prev => [...prev, newImg]);
+    }
+
+
+    //effect
     useEffect(() => {
         const fetchProductDetail = async () => {
             if (mode === "Update") {
@@ -106,7 +148,7 @@ const ProductForm = ({ mode, id }) => {
     return (
         <div className="container" style={{ textAlign: "left", width: "50%" }}>
             <div className="row">
-                <form method="put" onSubmit={handleProcess}>
+                <form method="post" onSubmit={handleProcess}>
                     <div className="form-group" style={{ marginBottom: "1%" }}>
                         <label htmlFor="name">Product Name</label>
                         <input name="name" className="form-control" placeholder="Product Name" defaultValue={productInfo.name ? productInfo.name : ""} required />
@@ -121,10 +163,9 @@ const ProductForm = ({ mode, id }) => {
                     </div>
                     <div className="form-group" style={{ marginBottom: "1%" }}>
                         <label htmlFor="category">Product Category</label>
-                        <select name="category" className="form-control" required >
-                            <option selected> test</option>
-                        </select>
+                        <CategorySelect id={id} default={mode === "Update" && productInfo.category._id} />
                     </div>
+                    {/* button section */}
                     <div style={{ margin: "5% 0" }} >
                         {
                             message && (
@@ -146,11 +187,46 @@ const ProductForm = ({ mode, id }) => {
                     </div>
 
                 </form>
-            </div>
-            <div className="row" style={{ marginTop: "1%" }}>
+                {!id &&
+                    <>
+                        <h3>Add immages to this product [optional]</h3>
+                        <form onSubmit={handleImage} id="imageForm">
+                            <div className="form-group" style={{ marginBottom: "1%" }}>
+                                <label htmlFor="image">Images</label>
+                                <div style={{ marginBottom: "1%", marginLeft: "5%" }}>
+                                    <div style={{ marginBottom: "1%" }}>
+                                        <label>URL</label>
+                                        <input name="Iurl" className="form-control" placeholder="url" />
+                                    </div>
+                                    <div style={{ marginBottom: "1%" }}>
+                                        <label>Caption</label>
+                                        <input name="Icaption" className="form-control" placeholder="caption" />
+                                    </div>
+                                    <div style={{ marginBottom: "1%" }}>
+                                        <label>Name</label>
+                                        <input name="Iname" className="form-control" placeholder="name" />
+                                    </div>
+                                    <div style={{ marginBottom: "1%" }}>
+                                        <button className="btn btn-primary" type="submit">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <label>Added images</label>
+                        <ul>
+                            {
+                                imageList.length > 0 && imageList.map((img, index) => {
+                                    return (
+                                        <li key={index}>
+                                            <span>{img.name}</span>
+                                            <button className="btn" onClick={() => deleteImage(index)}>Delete</button>
+                                        </li>)
+                                })
+                            }
+                        </ul>
+                    </>}
             </div>
         </div>
     )
-
 }
 export default ProductForm;

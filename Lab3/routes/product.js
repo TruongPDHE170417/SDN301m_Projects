@@ -15,6 +15,9 @@ productRouter.get("/comments/:id", ProductController.getCommentsByProductId);
 // POST: /products -> Create a new product
 productRouter.post('/', ProductController.createProduct);
 
+// POST: /products -> Comment product
+productRouter.post('/comment/:id', ProductController.comment);
+
 // PUT: /products/:id
 productRouter.put("/:id", ProductController.editProduct);
 

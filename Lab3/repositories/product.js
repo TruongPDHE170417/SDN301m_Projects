@@ -3,17 +3,17 @@ import Products from "../models/product.js";
 const create = async (name, price, description, imagesL, commentsL, category) => {
     try {
         // convert images id to string
-        const images = await Promise.all((imagesL ?? []).map(async (img) => {
+        const images = imagesL.length > 0 ? await Promise.all((imagesL ?? []).map(async (img) => {
             img._id = img._id.toString();
             delete img.name;
             return img;
-        }));
+        })) : [];
 
-        const comments = await Promise.all((commentsL ?? []).map(async (cmt) => {
+        const comments = commentsL.length > 0 ? await Promise.all((commentsL ?? []).map(async (cmt) => {
             cmt._id = cmt._id.toString();
             delete cmt.rate;
             return cmt;
-        }));
+        })) : [];
 
         // Create new product
         const newProduct = await Products.create({
@@ -34,7 +34,7 @@ const create = async (name, price, description, imagesL, commentsL, category) =>
 // Get all
 const list = async () => {
     try {
-        return await Products.find({}).exec();
+        return await Products.find({}).populate('category').exec();
     } catch (error) {
         throw new Error(error.toString());
     }

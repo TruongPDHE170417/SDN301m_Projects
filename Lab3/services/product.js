@@ -1,3 +1,4 @@
+import Products from '../models/product.js';
 import { ProductRepo, CommentRepo, ImageRepo } from '../repositories/index.js';
 
 // GET: /products/comments/:id
@@ -49,6 +50,22 @@ const create = async (name, price, description, images, comments, category) => {
     }
 }
 
+const comment = async (productId, newComment) => {
+    try {
+        const product = await ProductRepo.getById(productId);
+        const newCommentInfo = {
+            _id: newComment._id.toString(),
+            author: newComment.author,
+            text: newComment.text,
+        }
+        product.comments.push(newCommentInfo);
+        const newProduct = await Products.findByIdAndUpdate({ _id: product._id }, product).populate('category').exec();
+        return newProduct
+    } catch (error) {
+        throw new Error(e.toString());
+    }
+}
+
 // PUT: /products/1
 const edit = async (productId, body) => {
     try {
@@ -80,6 +97,7 @@ const deleteProduct = async (id) => {
 export default {
     getImages,
     getComments,
+    comment,
     create,
     edit,
     deleteProduct

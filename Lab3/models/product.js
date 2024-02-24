@@ -5,7 +5,6 @@ const productSchema = new Schema({
         type: String,
         trim: true,
         required: [true, 'Product name is required'],
-        unique: [true, 'Product name is unique value']
     },
     "price": {
         type: Number,

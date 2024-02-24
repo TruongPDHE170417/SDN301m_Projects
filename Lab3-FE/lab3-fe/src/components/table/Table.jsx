@@ -28,7 +28,7 @@ const CusTable = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [data]);
 
     return (
         <>
@@ -46,7 +46,7 @@ const CusTable = () => {
                     {
                         data.length > 0 && data.map(v => {
                             return (
-                                <Row key={v._id} id={v._id} name={v.name} price={v.price} />
+                                <Row key={v._id} id={v._id} name={v.name} price={v.price} binding={data} />
                             )
                         })
                     }

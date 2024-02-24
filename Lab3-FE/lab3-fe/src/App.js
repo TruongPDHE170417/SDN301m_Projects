@@ -10,7 +10,9 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <RouterProvider router={router} />
+      <div style={{ padding: "4% 0" }}>
+        <RouterProvider router={router} />
+      </div>
       <Footer />
     </div>
   );

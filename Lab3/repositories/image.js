@@ -47,9 +47,11 @@ const edit = async (image) => {
         throw new Error(error.toString());
     }
 }
+
 export default {
     getById,
     create,
+    
     createMany,
     drop,
     dropMany,
