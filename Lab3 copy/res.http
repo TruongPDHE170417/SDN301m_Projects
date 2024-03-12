@@ -1,0 +1,14 @@
+GET http://localhost:9999/categories/
+
+###
+POST  http://localhost:9999/categories/  HTTP/1.1
+content-type: application/json
+
+{
+    "name": "test add",
+    "description": "test add description"
+}
+
+ 
+###
+GET http://localhost:9999/test/
